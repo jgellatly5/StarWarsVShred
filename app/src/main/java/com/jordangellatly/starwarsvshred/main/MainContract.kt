@@ -4,12 +4,12 @@ import com.jordangellatly.starwarsvshred.BasePresenter
 import com.jordangellatly.starwarsvshred.BaseView
 
 interface MainContract {
-    interface MainPresenter : BasePresenter {
+    interface Presenter : BasePresenter {
         fun onViewCreated()
         fun onCharacterDetailSelected()
     }
 
-    interface MainView : BaseView<MainPresenter> {
+    interface View : BaseView<Presenter> {
         fun displayCharacterNames()
     }
 }

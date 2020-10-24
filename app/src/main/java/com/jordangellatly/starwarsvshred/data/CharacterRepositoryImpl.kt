@@ -1,6 +1,6 @@
 package com.jordangellatly.starwarsvshred.data
 
-class CharactersRepositoryImpl : CharacterRepository {
+class CharacterRepositoryImpl : CharacterRepository {
     override fun loadCharacters(): StarWarsCharacter {
         return StarWarsCharacter("Han Solo")
     }
