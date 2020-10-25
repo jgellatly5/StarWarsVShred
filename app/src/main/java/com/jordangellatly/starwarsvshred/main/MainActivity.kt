@@ -19,10 +19,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var characterAdapter: CharacterAdapter
+    private val characterDataset: MutableList<String> = mutableListOf()
 
     override var presenter: MainContract.Presenter = MainPresenter(this, DependencyInjectorImpl())
 
@@ -30,11 +30,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val characterDataset = mutableListOf(
-            "Han Solo",
-            "Darth Vader",
-            "Luke Skywalker"
-        )
         characterAdapter = CharacterAdapter(characterDataset)
 
         makeNetworkCall()
@@ -68,6 +63,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         return super.onOptionsItemSelected(item)
     }
 
+    // Presenter
     override fun displayCharacterNames() {
         // TODO populate RecyclerView
     }
@@ -83,13 +79,16 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             ) {
                 if (response.isSuccessful) {
                     progress_bar.visibility = View.GONE
+                    val characters = response.body()!!.results
+                    for (character in characters) {
+                        characterDataset.add(character.name)
+                    }
                     recycler_view.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(context)
                         adapter = characterAdapter
                     }
                 }
-                Log.w(TAG, "onResponse: ${response.body()}")
             }
 
             override fun onFailure(call: Call<StarWarsResults>, t: Throwable) {
