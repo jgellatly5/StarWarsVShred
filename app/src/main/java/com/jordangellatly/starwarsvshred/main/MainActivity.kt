@@ -3,6 +3,7 @@ package com.jordangellatly.starwarsvshred.main
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -36,10 +37,44 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         )
         characterAdapter = CharacterAdapter(characterDataset)
 
+        makeNetworkCall()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        val search = menu.findItem(R.id.search)
+        val searchView = search.actionView as SearchView
+        searchView.queryHint = "Search"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                characterAdapter.filter.filter(newText)
+                return true
+            }
+        })
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.refresh -> {
+                progress_bar.visibility = View.VISIBLE
+                makeNetworkCall()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun displayCharacterNames() {
+        // TODO populate RecyclerView
+    }
+
+    private fun makeNetworkCall() {
         val request = RetrofitBuilder.buildService(StarWarsApi::class.java)
         val call = request.getCharacterResults()
-
-        // TODO add refresh mechanism
 
         call.enqueue(object : Callback<StarWarsResults> {
             override fun onResponse(
@@ -67,28 +102,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 ).show()
             }
         })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        val search = menu.findItem(R.id.appSearchBar)
-        val searchView = search.actionView as SearchView
-        searchView.queryHint = "Search"
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                characterAdapter.filter.filter(newText)
-                return true
-            }
-        })
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun displayCharacterNames() {
-        // TODO populate RecyclerView
     }
 
     companion object {
