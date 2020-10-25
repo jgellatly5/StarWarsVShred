@@ -1,7 +1,7 @@
 package com.jordangellatly.starwarsvshred.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,16 +13,20 @@ import com.jordangellatly.starwarsvshred.DependencyInjectorImpl
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.data.RetrofitBuilder
 import com.jordangellatly.starwarsvshred.data.StarWarsApi
+import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
 import com.jordangellatly.starwarsvshred.data.StarWarsResults
+import com.jordangellatly.starwarsvshred.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.parceler.Parcels
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(), MainContract.View {
+class MainActivity : AppCompatActivity(), MainContract.View,
+    CharacterAdapter.CharacterAdapterListener {
 
     private lateinit var characterAdapter: CharacterAdapter
-    private val characterDataset: MutableList<String> = mutableListOf()
+    private val characterDataset: MutableList<StarWarsCharacter> = mutableListOf()
 
     override var presenter: MainContract.Presenter = MainPresenter(this, DependencyInjectorImpl())
 
@@ -30,7 +34,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        characterAdapter = CharacterAdapter(characterDataset)
+        characterAdapter = CharacterAdapter(characterDataset, this@MainActivity)
 
         makeNetworkCall()
     }
@@ -68,6 +72,17 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         // TODO populate RecyclerView
     }
 
+    override fun onCharacterSelected(character: StarWarsCharacter) {
+        Toast.makeText(this@MainActivity, "Selecting item", Toast.LENGTH_SHORT).show()
+        val bundle = Bundle().apply {
+            putParcelable("character", Parcels.wrap(character))
+        }
+        val intent = Intent(this@MainActivity, DetailActivity::class.java).apply {
+            putExtras(bundle)
+        }
+        startActivity(intent)
+    }
+
     private fun makeNetworkCall() {
         val request = RetrofitBuilder.buildService(StarWarsApi::class.java)
         val call = request.getCharacterResults()
@@ -81,7 +96,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                     progress_bar.visibility = View.GONE
                     val characters = response.body()!!.results
                     for (character in characters) {
-                        characterDataset.add(character.name)
+                        characterDataset.add(character)
                     }
                     recycler_view.apply {
                         setHasFixedSize(true)

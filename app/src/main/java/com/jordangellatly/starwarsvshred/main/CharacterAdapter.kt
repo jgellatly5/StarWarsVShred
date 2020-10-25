@@ -8,16 +8,24 @@ import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jordangellatly.starwarsvshred.R
+import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
 
 class CharacterAdapter(
-    private val characterDataset: MutableList<String>
+    private val characterDataset: MutableList<StarWarsCharacter>,
+    private val listener: CharacterAdapterListener
 ) : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>(), Filterable {
-    private var filteredCharacters: MutableList<String> = characterDataset
+    private var filteredCharacters: MutableList<StarWarsCharacter> = characterDataset
 
     inner class CharacterViewHolder(
         characterListItem: View
     ) : RecyclerView.ViewHolder(characterListItem) {
         var nameTextView: TextView = characterListItem.findViewById(R.id.name_text_view)
+
+        init {
+            characterListItem.setOnClickListener {
+                listener.onCharacterSelected(filteredCharacters[adapterPosition])
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
@@ -27,7 +35,7 @@ class CharacterAdapter(
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        holder.nameTextView.text = filteredCharacters[position]
+        holder.nameTextView.text = filteredCharacters[position].name
     }
 
     override fun getItemCount(): Int = filteredCharacters.size
@@ -37,10 +45,10 @@ class CharacterAdapter(
             filteredCharacters = if (constraint.isEmpty()) {
                 characterDataset
             } else {
-                val filteredList = ArrayList<String>()
-                for (name in characterDataset) {
-                    if (name.toLowerCase().startsWith(constraint)) {
-                        filteredList.add(name)
+                val filteredList = ArrayList<StarWarsCharacter>()
+                for (character in characterDataset) {
+                    if (character.name.toLowerCase().startsWith(constraint)) {
+                        filteredList.add(character)
                     }
                 }
                 filteredList
@@ -51,8 +59,12 @@ class CharacterAdapter(
         }
 
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
-            filteredCharacters = results.values as ArrayList<String>
+            filteredCharacters = results.values as ArrayList<StarWarsCharacter>
             notifyDataSetChanged()
         }
+    }
+
+    interface CharacterAdapterListener {
+        fun onCharacterSelected(character: StarWarsCharacter)
     }
 }
