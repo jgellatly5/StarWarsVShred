@@ -2,9 +2,11 @@ package com.jordangellatly.starwarsvshred.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordangellatly.starwarsvshred.DependencyInjectorImpl
 import com.jordangellatly.starwarsvshred.R
@@ -19,32 +21,37 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
+    private lateinit var characterAdapter: CharacterAdapter
+
     override var presenter: MainContract.Presenter = MainPresenter(this, DependencyInjectorImpl())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val characterDataset = mutableListOf(
+            "Han Solo",
+            "Darth Vader",
+            "Luke Skywalker"
+        )
+        characterAdapter = CharacterAdapter(characterDataset)
+
         val request = RetrofitBuilder.buildService(StarWarsApi::class.java)
         val call = request.getCharacterResults()
+
+        // TODO add refresh mechanism
+
         call.enqueue(object : Callback<StarWarsResults> {
             override fun onResponse(
                 call: Call<StarWarsResults>,
                 response: Response<StarWarsResults>
             ) {
-
-                val characterDataset = listOf(
-                    "Han Solo",
-                    "Darth Vader",
-                    "Luke Skywalker"
-                )
-
                 if (response.isSuccessful) {
                     progress_bar.visibility = View.GONE
                     recycler_view.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(context)
-                        adapter = CharacterAdapter(characterDataset)
+                        adapter = characterAdapter
                     }
                 }
                 Log.w(TAG, "onResponse: ${response.body()}")
@@ -60,6 +67,24 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 ).show()
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        val search = menu.findItem(R.id.appSearchBar)
+        val searchView = search.actionView as SearchView
+        searchView.queryHint = "Search"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                characterAdapter.filter.filter(newText)
+                return true
+            }
+        })
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun displayCharacterNames() {
