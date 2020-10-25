@@ -2,4 +2,6 @@
     <string name="app_name">StarWarsVShred</string>
     <string name="search">Search</string>
     <string name="refresh">Refresh</string>
+    <string name="favorite">Favorite</string>
+    <string name="name">Name</string>
 </resources>

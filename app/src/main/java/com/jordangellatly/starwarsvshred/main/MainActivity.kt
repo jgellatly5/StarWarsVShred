@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordangellatly.starwarsvshred.DependencyInjectorImpl
 import com.jordangellatly.starwarsvshred.R
@@ -45,9 +46,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         val searchView = search.actionView as SearchView
         searchView.queryHint = "Search"
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+            override fun onQueryTextSubmit(query: String?): Boolean = false
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 characterAdapter.filter.filter(newText)
@@ -102,6 +101,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(context)
                         adapter = characterAdapter
+                        addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
                     }
                 }
             }
