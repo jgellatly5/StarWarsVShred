@@ -23,6 +23,14 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        presenter.onViewCreated()
+
+        favorite_icon.setOnClickListener {
+            presenter.storeFavoritePreferences()
+        }
+    }
+
+    override fun displayCharacterDetails() {
         characterFromIntent = Parcels.unwrap(intent.getParcelableExtra("character"))
         character_name.text = characterFromIntent.name
         height_value.text = characterFromIntent.height
@@ -39,27 +47,23 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         } else {
             favorite_icon.setImageResource(R.drawable.ic_star_outline)
         }
-
-        favorite_icon.setOnClickListener {
-            if (sharedPreferences.getBoolean("is_favorite", false)) {
-                with(sharedPreferences.edit()) {
-                    putBoolean("is_favorite", false)
-                    apply()
-                }
-                favorite_icon.setImageResource(R.drawable.ic_star_outline)
-                Toast.makeText(this@DetailActivity, "${character_name.text} removed as a favorite", Toast.LENGTH_SHORT).show()
-            } else {
-                with(sharedPreferences.edit()) {
-                    putBoolean("is_favorite", true)
-                    apply()
-                }
-                favorite_icon.setImageResource(R.drawable.ic_star)
-                Toast.makeText(this@DetailActivity, "${character_name.text} is now a favorite", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
-    override fun displayCharacterDetails() {
-        // TODO display single character details
+    override fun markCharacterFavorite() {
+        if (sharedPreferences.getBoolean("is_favorite", false)) {
+            with(sharedPreferences.edit()) {
+                putBoolean("is_favorite", false)
+                apply()
+            }
+            favorite_icon.setImageResource(R.drawable.ic_star_outline)
+            Toast.makeText(this@DetailActivity, "${character_name.text} removed as a favorite", Toast.LENGTH_SHORT).show()
+        } else {
+            with(sharedPreferences.edit()) {
+                putBoolean("is_favorite", true)
+                apply()
+            }
+            favorite_icon.setImageResource(R.drawable.ic_star)
+            Toast.makeText(this@DetailActivity, "${character_name.text} is now a favorite", Toast.LENGTH_SHORT).show()
+        }
     }
 }

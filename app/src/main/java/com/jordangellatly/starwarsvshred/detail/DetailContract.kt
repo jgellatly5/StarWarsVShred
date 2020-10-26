@@ -6,10 +6,11 @@ import com.jordangellatly.starwarsvshred.BaseView
 interface DetailContract {
     interface Presenter : BasePresenter {
         fun onViewCreated()
-        fun markCharacterFavorite()
+        fun storeFavoritePreferences()
     }
 
     interface View : BaseView<Presenter> {
         fun displayCharacterDetails()
+        fun markCharacterFavorite()
     }
 }

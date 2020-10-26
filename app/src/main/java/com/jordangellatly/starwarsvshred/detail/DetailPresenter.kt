@@ -6,18 +6,14 @@ class DetailPresenter(
     private var view: DetailContract.View? = detailView
 
     override fun onViewCreated() {
-        loadDataSingleCharacter()
+        view?.displayCharacterDetails()
     }
 
-    override fun markCharacterFavorite() {
-        // TODO store character as favorite in SharedPrefs
+    override fun storeFavoritePreferences() {
+        view?.markCharacterFavorite()
     }
 
     override fun onDestroy() {
         view = null
-    }
-
-    private fun loadDataSingleCharacter() {
-        view?.displayCharacterDetails()
     }
 }
