@@ -19,6 +19,13 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
 
         characterFromIntent = Parcels.unwrap(intent.getParcelableExtra("character"))
         character_name.text = characterFromIntent.name
+        height_value.text = characterFromIntent.height
+        mass_value.text = characterFromIntent.mass
+        hair_color_value.text = characterFromIntent.hairColor
+        skin_color_value.text = characterFromIntent.skinColor
+        eye_color_value.text = characterFromIntent.eyeColor
+        birth_year_value.text = characterFromIntent.birthYear
+        gender_value.text = characterFromIntent.gender
     }
 
     override fun displayCharacterDetails() {

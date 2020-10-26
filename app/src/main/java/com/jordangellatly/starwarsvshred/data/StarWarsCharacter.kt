@@ -2,15 +2,16 @@ package com.jordangellatly.starwarsvshred.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 data class StarWarsCharacter(
     val name: String,
     val height: String,
     val mass: String,
-    val hairColor: String,
-    val skinColor: String,
-    val eyeColor: String,
-    val birthYear: String,
+    @SerializedName("hair_color") val hairColor: String,
+    @SerializedName("skin_color") val skinColor: String,
+    @SerializedName("eye_color") val eyeColor: String,
+    @SerializedName("birth_year") val birthYear: String,
     val gender: String
 ) : Parcelable {
     constructor(parcel: Parcel) : this(

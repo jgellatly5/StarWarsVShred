@@ -2,6 +2,7 @@ package com.jordangellatly.starwarsvshred.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -72,7 +73,6 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     }
 
     override fun onCharacterSelected(character: StarWarsCharacter) {
-        Toast.makeText(this@MainActivity, "Selecting item", Toast.LENGTH_SHORT).show()
         val bundle = Bundle().apply {
             putParcelable("character", Parcels.wrap(character))
         }
@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
                 response: Response<StarWarsResults>
             ) {
                 if (response.isSuccessful) {
+                    Log.w(TAG, "onResponse: ${response.body()!!.results}")
                     progress_bar.visibility = View.GONE
                     val characters = response.body()!!.results
                     for (character in characters) {
@@ -101,7 +102,12 @@ class MainActivity : AppCompatActivity(), MainContract.View,
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(context)
                         adapter = characterAdapter
-                        addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
+                        addItemDecoration(
+                            DividerItemDecoration(
+                                this@MainActivity,
+                                DividerItemDecoration.VERTICAL
+                            )
+                        )
                     }
                 }
             }
