@@ -17,6 +17,8 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         characterFromIntent = Parcels.unwrap(intent.getParcelableExtra("character"))
         character_name.text = characterFromIntent.name
         height_value.text = characterFromIntent.height
