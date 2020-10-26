@@ -14,8 +14,8 @@ class MainPresenter(
         loadCharacters()
     }
 
-    override fun onCharacterDetailSelected() {
-        // TODO pass data to intent to DetailActivity
+    override fun refreshCharacterDetails() {
+        loadCharacters()
     }
 
     override fun onDestroy() {
@@ -23,7 +23,8 @@ class MainPresenter(
     }
 
     private fun loadCharacters() {
-        val characters = charactersRepository.loadCharacters()
+        // TODO use repository to fetch API
+//        val characters = charactersRepository.loadCharacters()
         view?.displayCharacterNames()
     }
 

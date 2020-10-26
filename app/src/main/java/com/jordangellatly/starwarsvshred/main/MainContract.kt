@@ -6,7 +6,7 @@ import com.jordangellatly.starwarsvshred.BaseView
 interface MainContract {
     interface Presenter : BasePresenter {
         fun onViewCreated()
-        fun onCharacterDetailSelected()
+        fun refreshCharacterDetails()
     }
 
     interface View : BaseView<Presenter> {

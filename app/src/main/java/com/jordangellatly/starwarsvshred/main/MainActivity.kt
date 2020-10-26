@@ -30,7 +30,8 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     private lateinit var characterAdapter: CharacterAdapter
     private val characterDataset: MutableList<StarWarsCharacter> = mutableListOf()
 
-    override var presenter: MainContract.Presenter = MainPresenter(this, DependencyInjectorImpl())
+    // BaseView
+    override var presenter: MainContract.Presenter = MainPresenter(this@MainActivity, DependencyInjectorImpl())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +39,14 @@ class MainActivity : AppCompatActivity(), MainContract.View,
 
         characterAdapter = CharacterAdapter(this@MainActivity, characterDataset, this@MainActivity)
 
-        makeNetworkCall()
+        // MainContract.Presenter
+        presenter.onViewCreated()
+    }
+
+    // BasePresenter
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -60,29 +68,17 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.refresh -> {
+                // TODO this is adding more entries to the list
                 progress_bar.visibility = View.VISIBLE
-                makeNetworkCall()
+                Toast.makeText(this@MainActivity, "Refreshing...", Toast.LENGTH_SHORT).show()
+                presenter.refreshCharacterDetails()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    // Presenter
+    // MainContract.View
     override fun displayCharacterNames() {
-        // TODO populate RecyclerView
-    }
-
-    override fun onCharacterSelected(character: StarWarsCharacter) {
-        val bundle = Bundle().apply {
-            putParcelable("character", Parcels.wrap(character))
-        }
-        val intent = Intent(this@MainActivity, DetailActivity::class.java).apply {
-            putExtras(bundle)
-        }
-        startActivity(intent)
-    }
-
-    private fun makeNetworkCall() {
         val request = RetrofitBuilder.buildService(StarWarsApi::class.java)
         val call = request.getCharacterResults()
 
@@ -122,6 +118,17 @@ class MainActivity : AppCompatActivity(), MainContract.View,
                 ).show()
             }
         })
+    }
+
+    // CharacterAdapter.CharacterAdapterListener
+    override fun onCharacterSelected(character: StarWarsCharacter) {
+        val bundle = Bundle().apply {
+            putParcelable("character", Parcels.wrap(character))
+        }
+        val intent = Intent(this@MainActivity, DetailActivity::class.java).apply {
+            putExtras(bundle)
+        }
+        startActivity(intent)
     }
 
     companion object {
