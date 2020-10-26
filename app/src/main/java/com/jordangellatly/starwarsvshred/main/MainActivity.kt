@@ -2,7 +2,6 @@ package com.jordangellatly.starwarsvshred.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,16 +12,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordangellatly.starwarsvshred.DependencyInjectorImpl
 import com.jordangellatly.starwarsvshred.R
-import com.jordangellatly.starwarsvshred.data.RetrofitBuilder
-import com.jordangellatly.starwarsvshred.data.StarWarsApi
 import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
-import com.jordangellatly.starwarsvshred.data.StarWarsResults
 import com.jordangellatly.starwarsvshred.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.parceler.Parcels
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), MainContract.View,
     CharacterAdapter.CharacterAdapterListener {
@@ -31,7 +24,8 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     private val characterDataset: MutableList<StarWarsCharacter> = mutableListOf()
 
     // BaseView
-    override var presenter: MainContract.Presenter = MainPresenter(this@MainActivity, DependencyInjectorImpl())
+    override var presenter: MainContract.Presenter =
+        MainPresenter(this@MainActivity, DependencyInjectorImpl())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,46 +72,31 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     }
 
     // MainContract.View
-    override fun displayCharacterNames() {
-        val request = RetrofitBuilder.buildService(StarWarsApi::class.java)
-        val call = request.getCharacterResults()
-
-        call.enqueue(object : Callback<StarWarsResults> {
-            override fun onResponse(
-                call: Call<StarWarsResults>,
-                response: Response<StarWarsResults>
-            ) {
-                if (response.isSuccessful) {
-                    Log.w(TAG, "onResponse: ${response.body()!!.results}")
-                    progress_bar.visibility = View.GONE
-                    val characters = response.body()!!.results
-                    for (character in characters) {
-                        characterDataset.add(character)
-                    }
-                    recycler_view.apply {
-                        setHasFixedSize(true)
-                        layoutManager = LinearLayoutManager(context)
-                        adapter = characterAdapter
-                        addItemDecoration(
-                            DividerItemDecoration(
-                                this@MainActivity,
-                                DividerItemDecoration.VERTICAL
-                            )
-                        )
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<StarWarsResults>, t: Throwable) {
-                // TODO improve handling this
-                progress_bar.visibility = View.GONE
-                Toast.makeText(
+    override fun displayCharacterNames(characters: List<StarWarsCharacter>) {
+        progress_bar.visibility = View.GONE
+        for (character in characters) {
+            characterDataset.add(character)
+        }
+        recycler_view.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = characterAdapter
+            addItemDecoration(
+                DividerItemDecoration(
                     this@MainActivity,
-                    "Could not process the request. Please check your internet connection.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
+    }
+
+    override fun displayError() {
+        progress_bar.visibility = View.GONE
+        Toast.makeText(
+            this@MainActivity,
+            "Could not process the request. Please check your internet connection.",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     // CharacterAdapter.CharacterAdapterListener

@@ -2,30 +2,33 @@ package com.jordangellatly.starwarsvshred.main
 
 import com.jordangellatly.starwarsvshred.DependencyInjector
 import com.jordangellatly.starwarsvshred.data.CharacterRepository
+import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
 
 class MainPresenter(
     mainView: MainContract.View,
     dependencyInjector: DependencyInjector
-) : MainContract.Presenter {
+) : MainContract.Presenter, CharacterRepository.LoadCharactersCallback {
     private val charactersRepository: CharacterRepository = dependencyInjector.characterRepository()
     private var view: MainContract.View? = mainView
 
     override fun onViewCreated() {
-        loadCharacters()
+        charactersRepository.loadCharacters(this)
     }
 
     override fun refreshCharacterDetails() {
-        loadCharacters()
+        charactersRepository.loadCharacters(this)
     }
 
     override fun onDestroy() {
         view = null
     }
 
-    private fun loadCharacters() {
-        // TODO use repository to fetch API
-//        val characters = charactersRepository.loadCharacters()
-        view?.displayCharacterNames()
+    override fun onCharactersLoaded(characters: List<StarWarsCharacter>) {
+        view?.displayCharacterNames(characters)
+    }
+
+    override fun onDataNotAvailable() {
+        view?.displayError()
     }
 
 }

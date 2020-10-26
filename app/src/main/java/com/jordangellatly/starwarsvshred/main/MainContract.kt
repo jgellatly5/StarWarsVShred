@@ -2,6 +2,7 @@ package com.jordangellatly.starwarsvshred.main
 
 import com.jordangellatly.starwarsvshred.BasePresenter
 import com.jordangellatly.starwarsvshred.BaseView
+import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
 
 interface MainContract {
     interface Presenter : BasePresenter {
@@ -10,6 +11,7 @@ interface MainContract {
     }
 
     interface View : BaseView<Presenter> {
-        fun displayCharacterNames()
+        fun displayCharacterNames(characters: List<StarWarsCharacter>)
+        fun displayError()
     }
 }
