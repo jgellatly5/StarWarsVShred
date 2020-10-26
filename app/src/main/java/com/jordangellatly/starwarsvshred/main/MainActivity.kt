@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     CharacterAdapter.CharacterAdapterListener {
 
     private lateinit var characterAdapter: CharacterAdapter
-    private val characterDataset: MutableList<StarWarsCharacter> = mutableListOf()
+    private var characterDataset: MutableList<StarWarsCharacter> = mutableListOf()
 
     // BaseView
     override var presenter: MainContract.Presenter =
@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.refresh -> {
-                // TODO this is adding more entries to the list
                 progress_bar.visibility = View.VISIBLE
+                characterDataset = mutableListOf()
                 Toast.makeText(this@MainActivity, "Refreshing...", Toast.LENGTH_SHORT).show()
                 presenter.refreshCharacterDetails()
             }
