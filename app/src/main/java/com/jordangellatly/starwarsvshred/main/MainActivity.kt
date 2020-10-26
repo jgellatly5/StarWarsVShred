@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         }
     }
 
+    // MainContract.View
     override fun displayError() {
         progress_bar.visibility = View.GONE
         Toast.makeText(

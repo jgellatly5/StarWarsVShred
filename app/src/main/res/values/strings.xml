@@ -3,5 +3,20 @@
     <string name="search">Search</string>
     <string name="refresh">Refresh</string>
     <string name="favorite">Favorite</string>
-    <string name="name">Name</string>
+    <string name="name_hint">Name</string>
+    <string name="icon">Icon</string>
+    <string name="height_tv">Height:</string>
+    <string name="height_value_hint">180</string>
+    <string name="mass_tv">Mass:</string>
+    <string name="mass_value_hint">77</string>
+    <string name="hair_color_tv">Hair Color:</string>
+    <string name="hair_color_hint">Brown</string>
+    <string name="skin_color_tv">Skin Color:</string>
+    <string name="skin_color_hint">Fair</string>
+    <string name="eye_color_tv">Eye Color:</string>
+    <string name="eye_color_hint">Blue</string>
+    <string name="birth_year_tv">Birth Year:</string>
+    <string name="birth_year_hint">33BBY</string>
+    <string name="gender_tv">Gender:</string>
+    <string name="gender_hint">Male</string>
 </resources>
