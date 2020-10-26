@@ -29,6 +29,16 @@ class CharacterAdapter(
                 listener.onCharacterSelected(filteredCharacters[adapterPosition])
             }
         }
+
+        fun updateIcon(context: Context) {
+            val sharedPreferences = context.getSharedPreferences(nameTextView.text.toString(), Context.MODE_PRIVATE)
+            if (sharedPreferences.getBoolean("is_favorite", false)) {
+                favoriteIcon.setImageResource(R.drawable.ic_star)
+            } else {
+                favoriteIcon.setImageResource(R.drawable.ic_star_outline)
+            }
+        }
+
         private fun handleFavoriteCharacter() {
             val sharedPrefs = context.getSharedPreferences(nameTextView.text.toString(), Context.MODE_PRIVATE)
             if (sharedPrefs.getBoolean("is_favorite", false)) {
@@ -57,6 +67,7 @@ class CharacterAdapter(
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         holder.nameTextView.text = filteredCharacters[position].name
+        holder.updateIcon(context)
     }
 
     override fun getItemCount(): Int = filteredCharacters.size
