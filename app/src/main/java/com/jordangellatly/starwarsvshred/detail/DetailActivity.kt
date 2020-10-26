@@ -1,5 +1,7 @@
 package com.jordangellatly.starwarsvshred.detail
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -11,6 +13,7 @@ import org.parceler.Parcels
 class DetailActivity : AppCompatActivity(), DetailContract.View {
 
     private lateinit var characterFromIntent: StarWarsCharacter
+    private lateinit var sharedPreferences: SharedPreferences
 
     override var presenter: DetailContract.Presenter = DetailPresenter(this)
 
@@ -30,9 +33,29 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         birth_year_value.text = characterFromIntent.birthYear
         gender_value.text = characterFromIntent.gender
 
-        favorite_button.setOnClickListener {
-            Toast.makeText(this@DetailActivity, "This character is now a favorite", Toast.LENGTH_SHORT).show()
-            finish()
+        sharedPreferences = getSharedPreferences(character_name.text.toString(), Context.MODE_PRIVATE)
+        if (sharedPreferences.getBoolean("is_favorite", false)) {
+            favorite_icon.setImageResource(R.drawable.ic_star)
+        } else {
+            favorite_icon.setImageResource(R.drawable.ic_star_outline)
+        }
+
+        favorite_icon.setOnClickListener {
+            if (sharedPreferences.getBoolean("is_favorite", false)) {
+                with(sharedPreferences.edit()) {
+                    putBoolean("is_favorite", false)
+                    apply()
+                }
+                favorite_icon.setImageResource(R.drawable.ic_star_outline)
+                Toast.makeText(this@DetailActivity, "${character_name.text} removed as a favorite", Toast.LENGTH_SHORT).show()
+            } else {
+                with(sharedPreferences.edit()) {
+                    putBoolean("is_favorite", true)
+                    apply()
+                }
+                favorite_icon.setImageResource(R.drawable.ic_star)
+                Toast.makeText(this@DetailActivity, "${character_name.text} is now a favorite", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
