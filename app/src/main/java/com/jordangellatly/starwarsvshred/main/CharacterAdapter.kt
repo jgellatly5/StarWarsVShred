@@ -1,16 +1,16 @@
 package com.jordangellatly.starwarsvshred.main
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
 
 class CharacterAdapter(
+    private val context: Context,
     private val characterDataset: MutableList<StarWarsCharacter>,
     private val listener: CharacterAdapterListener
 ) : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>(), Filterable {
@@ -20,10 +20,31 @@ class CharacterAdapter(
         characterListItem: View
     ) : RecyclerView.ViewHolder(characterListItem) {
         var nameTextView: TextView = characterListItem.findViewById(R.id.name_text_view)
-
+        var favoriteIcon: ImageView = characterListItem.findViewById(R.id.favorite)
         init {
+            favoriteIcon.setOnClickListener {
+                handleFavoriteCharacter()
+            }
             characterListItem.setOnClickListener {
                 listener.onCharacterSelected(filteredCharacters[adapterPosition])
+            }
+        }
+        private fun handleFavoriteCharacter() {
+            val sharedPrefs = context.getSharedPreferences(nameTextView.text.toString(), Context.MODE_PRIVATE)
+            if (sharedPrefs.getBoolean("is_favorite", false)) {
+                with(sharedPrefs.edit()) {
+                    putBoolean("is_favorite", false)
+                    apply()
+                }
+                favoriteIcon.setImageResource(R.drawable.ic_star_outline)
+                Toast.makeText(context, "${nameTextView.text} removed as a favorite", Toast.LENGTH_SHORT).show()
+            } else {
+                with(sharedPrefs.edit()) {
+                    putBoolean("is_favorite", true)
+                    apply()
+                }
+                favoriteIcon.setImageResource(R.drawable.ic_star)
+                Toast.makeText(context, "${nameTextView.text} is now a favorite", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        characterAdapter = CharacterAdapter(characterDataset, this@MainActivity)
+        characterAdapter = CharacterAdapter(this@MainActivity, characterDataset, this@MainActivity)
 
         makeNetworkCall()
     }
