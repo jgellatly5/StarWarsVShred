@@ -2,6 +2,7 @@ package com.jordangellatly.starwarsvshred.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -28,6 +29,11 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         eye_color_value.text = characterFromIntent.eyeColor
         birth_year_value.text = characterFromIntent.birthYear
         gender_value.text = characterFromIntent.gender
+
+        favorite_button.setOnClickListener {
+            Toast.makeText(this@DetailActivity, "This character is now a favorite", Toast.LENGTH_SHORT).show()
+            finish()
+        }
     }
 
     override fun displayCharacterDetails() {
