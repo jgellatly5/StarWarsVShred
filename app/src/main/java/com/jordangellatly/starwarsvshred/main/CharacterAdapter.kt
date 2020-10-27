@@ -12,7 +12,7 @@ import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
 class CharacterAdapter(
     private val context: Context,
     private val characterDataset: MutableList<StarWarsCharacter>,
-    private val listener: CharacterAdapterListener
+    private val presenter: MainContract.Presenter
 ) : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>(), Filterable {
     private var filteredCharacters: MutableList<StarWarsCharacter> = characterDataset
 
@@ -26,7 +26,7 @@ class CharacterAdapter(
                 handleFavoriteCharacter()
             }
             characterListItem.setOnClickListener {
-                listener.onCharacterSelected(filteredCharacters[adapterPosition])
+                presenter.showCharacterDetails(filteredCharacters[adapterPosition])
             }
         }
 

@@ -17,8 +17,7 @@ import com.jordangellatly.starwarsvshred.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.parceler.Parcels
 
-class MainActivity : AppCompatActivity(), MainContract.View,
-    CharacterAdapter.CharacterAdapterListener {
+class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var characterAdapter: CharacterAdapter
     private var characterDataset: MutableList<StarWarsCharacter> = mutableListOf()
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        characterAdapter = CharacterAdapter(this@MainActivity, characterDataset, this@MainActivity)
+        characterAdapter = CharacterAdapter(this@MainActivity, characterDataset, presenter)
 
         // MainContract.Presenter
         presenter.onViewCreated()
@@ -96,19 +95,22 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         ).show()
     }
 
+    // MainContract.View
     override fun showProgress() {
         progress_bar.visibility = View.VISIBLE
     }
 
+    // MainContract.View
     override fun hideProgress() {
         progress_bar.visibility = View.GONE
     }
 
+    // MainContract.View
     override fun showRefresh() {
         Toast.makeText(this@MainActivity, "Refreshing...", Toast.LENGTH_SHORT).show()
     }
 
-    // CharacterAdapter.CharacterAdapterListener
+    // MainContract.View
     override fun onCharacterSelected(character: StarWarsCharacter) {
         val bundle = Bundle().apply {
             putParcelable("character", Parcels.wrap(character))

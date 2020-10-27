@@ -22,6 +22,10 @@ class MainPresenter(
         charactersRepository.loadCharacters(this)
     }
 
+    override fun showCharacterDetails(character: StarWarsCharacter) {
+        view?.onCharacterSelected(character)
+    }
+
     override fun onDestroy() {
         view = null
     }

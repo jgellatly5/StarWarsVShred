@@ -8,6 +8,7 @@ interface MainContract {
     interface Presenter : BasePresenter {
         fun onViewCreated()
         fun refreshCharacterDetails()
+        fun showCharacterDetails(character: StarWarsCharacter)
     }
 
     interface View : BaseView<Presenter> {
@@ -16,5 +17,6 @@ interface MainContract {
         fun showProgress()
         fun hideProgress()
         fun showRefresh()
+        fun onCharacterSelected(character: StarWarsCharacter)
     }
 }
