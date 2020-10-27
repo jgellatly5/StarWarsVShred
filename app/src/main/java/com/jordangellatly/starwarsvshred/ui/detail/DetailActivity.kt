@@ -1,4 +1,4 @@
-package com.jordangellatly.starwarsvshred.detail
+package com.jordangellatly.starwarsvshred.ui.detail
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,23 +6,29 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.jordangellatly.starwarsvshred.R
-import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
+import com.jordangellatly.starwarsvshred.application.StarWarsApplication
+import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
 import kotlinx.android.synthetic.main.activity_detail.*
 import org.parceler.Parcels
+import javax.inject.Inject
 
 class DetailActivity : AppCompatActivity(), DetailContract.View {
 
     private lateinit var characterFromIntent: StarWarsCharacter
     private lateinit var sharedPreferences: SharedPreferences
 
-    override var presenter: DetailContract.Presenter = DetailPresenter(this)
+    @Inject
+    lateinit var presenter: DetailContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        (application as StarWarsApplication).starWarsComponent.inject(this)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        presenter.setView(this@DetailActivity)
         presenter.onViewCreated()
 
         favorite_icon.setOnClickListener {

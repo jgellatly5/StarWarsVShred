@@ -1,4 +1,4 @@
-package com.jordangellatly.starwarsvshred.data
+package com.jordangellatly.starwarsvshred.model
 
 data class StarWarsResults(
     val count: Int,

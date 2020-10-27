@@ -1,4 +1,4 @@
-package com.jordangellatly.starwarsvshred.main
+package com.jordangellatly.starwarsvshred.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,36 +10,33 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jordangellatly.starwarsvshred.DependencyInjectorImpl
 import com.jordangellatly.starwarsvshred.R
-import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
-import com.jordangellatly.starwarsvshred.detail.DetailActivity
+import com.jordangellatly.starwarsvshred.application.StarWarsApplication
+import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
+import com.jordangellatly.starwarsvshred.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.parceler.Parcels
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var characterAdapter: CharacterAdapter
     private var characterDataset: MutableList<StarWarsCharacter> = mutableListOf()
 
-    // BaseView
-    override var presenter: MainContract.Presenter =
-        MainPresenter(this@MainActivity, DependencyInjectorImpl())
+    @Inject
+    lateinit var presenter: MainContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        (application as StarWarsApplication).starWarsComponent.inject(this)
+
         characterAdapter = CharacterAdapter(this@MainActivity, characterDataset, presenter)
 
         // MainContract.Presenter
+        presenter.setView(this@MainActivity)
         presenter.onViewCreated()
-    }
-
-    // BasePresenter
-    override fun onDestroy() {
-        presenter.onDestroy()
-        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

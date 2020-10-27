@@ -1,5 +1,6 @@
-package com.jordangellatly.starwarsvshred.data
+package com.jordangellatly.starwarsvshred.network
 
+import com.jordangellatly.starwarsvshred.model.StarWarsResults
 import retrofit2.Call
 import retrofit2.http.GET
 

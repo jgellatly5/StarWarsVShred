@@ -1,17 +1,16 @@
-package com.jordangellatly.starwarsvshred.main
+package com.jordangellatly.starwarsvshred.ui.main
 
-import com.jordangellatly.starwarsvshred.BasePresenter
-import com.jordangellatly.starwarsvshred.BaseView
-import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
+import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
 
 interface MainContract {
-    interface Presenter : BasePresenter {
+    interface Presenter {
+        fun setView(mainView: View)
         fun onViewCreated()
         fun refreshCharacterDetails()
         fun showCharacterDetails(character: StarWarsCharacter)
     }
 
-    interface View : BaseView<Presenter> {
+    interface View {
         fun displayCharacterNames(characters: List<StarWarsCharacter>)
         fun displayError()
         fun showProgress()

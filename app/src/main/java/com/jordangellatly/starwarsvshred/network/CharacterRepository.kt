@@ -1,4 +1,6 @@
-package com.jordangellatly.starwarsvshred.data
+package com.jordangellatly.starwarsvshred.network
+
+import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
 
 interface CharacterRepository {
     interface LoadCharactersCallback {

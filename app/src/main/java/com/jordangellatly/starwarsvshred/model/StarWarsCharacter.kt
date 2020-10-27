@@ -1,4 +1,4 @@
-package com.jordangellatly.starwarsvshred.data
+package com.jordangellatly.starwarsvshred.model
 
 import android.os.Parcel
 import android.os.Parcelable

@@ -1,19 +1,15 @@
-package com.jordangellatly.starwarsvshred.data
+package com.jordangellatly.starwarsvshred.network
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-object RetrofitBuilder {
-
-    private const val BASE_URL: String = "https://swapi.dev/api/"
-
-    private val okHttpClient = OkHttpClient.Builder().build()
-
+class ServiceBuilder @Inject constructor(url: String, client: OkHttpClient) {
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(url)
         .addConverterFactory(GsonConverterFactory.create())
-        .client(okHttpClient)
+        .client(client)
         .build()
 
     fun <T> buildService(service: Class<T>): T = retrofit.create(service)

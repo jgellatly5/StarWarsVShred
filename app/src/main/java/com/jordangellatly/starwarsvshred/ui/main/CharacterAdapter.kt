@@ -1,4 +1,4 @@
-package com.jordangellatly.starwarsvshred.main
+package com.jordangellatly.starwarsvshred.ui.main
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.jordangellatly.starwarsvshred.R
-import com.jordangellatly.starwarsvshred.data.StarWarsCharacter
+import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
 
 class CharacterAdapter(
     private val context: Context,

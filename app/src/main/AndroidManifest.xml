@@ -5,18 +5,19 @@
     <uses-permission android:name="android.permission.INTERNET" />
     
     <application
+        android:name=".application.StarWarsApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StarWarsVShred">
-        <activity android:name=".detail.DetailActivity">
+        <activity android:name="com.jordangellatly.starwarsvshred.ui.detail.DetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jordangellatly.starwarsvshred.main.MainActivity" />
+                android:value="com.jordangellatly.starwarsvshred.ui.main.MainActivity" />
         </activity>
-        <activity android:name=".main.MainActivity">
+        <activity android:name="com.jordangellatly.starwarsvshred.ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

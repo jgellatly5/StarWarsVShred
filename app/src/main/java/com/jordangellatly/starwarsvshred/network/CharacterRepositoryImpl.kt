@@ -1,12 +1,14 @@
-package com.jordangellatly.starwarsvshred.data
+package com.jordangellatly.starwarsvshred.network
 
+import com.jordangellatly.starwarsvshred.model.StarWarsResults
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class CharacterRepositoryImpl : CharacterRepository {
+class CharacterRepositoryImpl @Inject constructor(private val serviceBuilder: ServiceBuilder) : CharacterRepository {
     override fun loadCharacters(callback: CharacterRepository.LoadCharactersCallback) {
-        val request = RetrofitBuilder.buildService(StarWarsApi::class.java)
+        val request = serviceBuilder.buildService(StarWarsApi::class.java)
         val call = request.getCharacterResults()
 
         call.enqueue(object : Callback<StarWarsResults> {
