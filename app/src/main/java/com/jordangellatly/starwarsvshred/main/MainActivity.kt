@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.refresh -> {
-                characterDataset = mutableListOf()
+                characterAdapter.clear()
                 Toast.makeText(this@MainActivity, "Refreshing...", Toast.LENGTH_SHORT).show()
                 presenter.refreshCharacterDetails()
             }

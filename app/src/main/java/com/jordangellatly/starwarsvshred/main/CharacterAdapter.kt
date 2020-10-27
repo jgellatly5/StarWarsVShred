@@ -96,6 +96,11 @@ class CharacterAdapter(
         }
     }
 
+    fun clear() {
+        filteredCharacters.clear()
+        notifyDataSetChanged()
+    }
+
     interface CharacterAdapterListener {
         fun onCharacterSelected(character: StarWarsCharacter)
     }
