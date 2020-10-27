@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         when (item.itemId) {
             R.id.refresh -> {
                 characterAdapter.clear()
-                Toast.makeText(this@MainActivity, "Refreshing...", Toast.LENGTH_SHORT).show()
                 presenter.refreshCharacterDetails()
             }
         }
@@ -103,6 +102,10 @@ class MainActivity : AppCompatActivity(), MainContract.View,
 
     override fun hideProgress() {
         progress_bar.visibility = View.GONE
+    }
+
+    override fun showRefresh() {
+        Toast.makeText(this@MainActivity, "Refreshing...", Toast.LENGTH_SHORT).show()
     }
 
     // CharacterAdapter.CharacterAdapterListener

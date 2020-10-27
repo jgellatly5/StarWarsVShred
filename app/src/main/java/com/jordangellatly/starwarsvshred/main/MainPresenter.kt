@@ -18,6 +18,7 @@ class MainPresenter(
 
     override fun refreshCharacterDetails() {
         view?.showProgress()
+        view?.showRefresh()
         charactersRepository.loadCharacters(this)
     }
 

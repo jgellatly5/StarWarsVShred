@@ -15,5 +15,6 @@ interface MainContract {
         fun displayError()
         fun showProgress()
         fun hideProgress()
+        fun showRefresh()
     }
 }
