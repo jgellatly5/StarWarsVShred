@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".detail.DetailActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/character_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_margin_start_end"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:text="@string/name_hint"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/favorite_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="@dimen/detail_margin_start_end"
+            android:contentDescription="@string/icon"
+            android:paddingStart="40dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/ic_star_outline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/height_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_margin_start_end"
+            android:layout_marginTop="32dp"
+            android:gravity="start"
+            android:text="@string/height_tv"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/character_name" />
+
+        <TextView
+            android:id="@+id/height_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="@dimen/detail_margin_start_end"
+            android:gravity="end"
+            android:hint="@string/height_value_hint"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/character_name" />
+
+        <TextView
+            android:id="@+id/mass_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_margin_start_end"
+            android:layout_marginTop="@dimen/detail_space"
+            android:gravity="start"
+            android:text="@string/mass_tv"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/height_tv" />
+
+        <TextView
+            android:id="@+id/mass_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/detail_space"
+            android:layout_marginEnd="@dimen/detail_margin_start_end"
+            android:gravity="end"
+            android:hint="@string/mass_value_hint"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/height_value" />
+
+        <TextView
+            android:id="@+id/hair_color_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_margin_start_end"
+            android:layout_marginTop="@dimen/detail_space"
+            android:gravity="start"
+            android:text="@string/hair_color_tv"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mass_tv" />
+
+        <TextView
+            android:id="@+id/hair_color_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/detail_space"
+            android:layout_marginEnd="@dimen/detail_margin_start_end"
+            android:gravity="end"
+            android:hint="@string/hair_color_hint"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mass_value" />
+
+        <TextView
+            android:id="@+id/skin_color_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_margin_start_end"
+            android:layout_marginTop="@dimen/detail_space"
+            android:gravity="start"
+            android:text="@string/skin_color_tv"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hair_color_tv" />
+
+        <TextView
+            android:id="@+id/skin_color_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/detail_space"
+            android:layout_marginEnd="@dimen/detail_margin_start_end"
+            android:gravity="end"
+            android:hint="@string/skin_color_hint"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hair_color_value" />
+
+        <TextView
+            android:id="@+id/eye_color_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_margin_start_end"
+            android:layout_marginTop="@dimen/detail_space"
+            android:gravity="start"
+            android:text="@string/eye_color_tv"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/skin_color_tv" />
+
+        <TextView
+            android:id="@+id/eye_color_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/detail_space"
+            android:layout_marginEnd="@dimen/detail_margin_start_end"
+            android:gravity="end"
+            android:hint="@string/eye_color_hint"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/skin_color_value" />
+
+        <TextView
+            android:id="@+id/birth_year_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_margin_start_end"
+            android:layout_marginTop="@dimen/detail_space"
+            android:gravity="start"
+            android:text="@string/birth_year_tv"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eye_color_tv" />
+
+        <TextView
+            android:id="@+id/birth_year_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/detail_space"
+            android:layout_marginEnd="@dimen/detail_margin_start_end"
+            android:gravity="end"
+            android:hint="@string/birth_year_hint"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eye_color_value" />
+
+        <TextView
+            android:id="@+id/gender_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_margin_start_end"
+            android:layout_marginTop="@dimen/detail_space"
+            android:layout_marginBottom="20dp"
+            android:gravity="start"
+            android:text="@string/gender_tv"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/birth_year_tv" />
+
+        <TextView
+            android:id="@+id/gender_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/detail_space"
+            android:layout_marginEnd="@dimen/detail_margin_start_end"
+            android:layout_marginBottom="20dp"
+            android:gravity="end"
+            android:hint="@string/gender_hint"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/birth_year_value" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
