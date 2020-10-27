@@ -13,5 +13,7 @@ interface MainContract {
     interface View : BaseView<Presenter> {
         fun displayCharacterNames(characters: List<StarWarsCharacter>)
         fun displayError()
+        fun showProgress()
+        fun hideProgress()
     }
 }

@@ -12,10 +12,12 @@ class MainPresenter(
     private var view: MainContract.View? = mainView
 
     override fun onViewCreated() {
+        view?.showProgress()
         charactersRepository.loadCharacters(this)
     }
 
     override fun refreshCharacterDetails() {
+        view?.showProgress()
         charactersRepository.loadCharacters(this)
     }
 
@@ -24,10 +26,12 @@ class MainPresenter(
     }
 
     override fun onCharactersLoaded(characters: List<StarWarsCharacter>) {
+        view?.hideProgress()
         view?.displayCharacterNames(characters)
     }
 
     override fun onDataNotAvailable() {
+        view?.hideProgress()
         view?.displayError()
     }
 

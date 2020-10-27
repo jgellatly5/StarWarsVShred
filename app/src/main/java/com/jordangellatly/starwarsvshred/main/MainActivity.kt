@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.refresh -> {
-                progress_bar.visibility = View.VISIBLE
                 characterDataset = mutableListOf()
                 Toast.makeText(this@MainActivity, "Refreshing...", Toast.LENGTH_SHORT).show()
                 presenter.refreshCharacterDetails()
@@ -73,7 +72,6 @@ class MainActivity : AppCompatActivity(), MainContract.View,
 
     // MainContract.View
     override fun displayCharacterNames(characters: List<StarWarsCharacter>) {
-        progress_bar.visibility = View.GONE
         for (character in characters) {
             characterDataset.add(character)
         }
@@ -92,12 +90,19 @@ class MainActivity : AppCompatActivity(), MainContract.View,
 
     // MainContract.View
     override fun displayError() {
-        progress_bar.visibility = View.GONE
         Toast.makeText(
             this@MainActivity,
             "Could not process the request. Please check your internet connection.",
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    override fun showProgress() {
+        progress_bar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        progress_bar.visibility = View.GONE
     }
 
     // CharacterAdapter.CharacterAdapterListener
