@@ -23,8 +23,7 @@ data class StarWarsCharacter(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)

@@ -23,6 +23,8 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        sharedPreferences = getSharedPreferences(character_name.text.toString(), Context.MODE_PRIVATE)
+
         presenter.onViewCreated()
 
         favorite_icon.setOnClickListener {
@@ -41,7 +43,6 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         birth_year_value.text = characterFromIntent.birthYear
         gender_value.text = characterFromIntent.gender
 
-        sharedPreferences = getSharedPreferences(character_name.text.toString(), Context.MODE_PRIVATE)
         if (sharedPreferences.getBoolean("is_favorite", false)) {
             favorite_icon.setImageResource(R.drawable.ic_star)
         } else {
