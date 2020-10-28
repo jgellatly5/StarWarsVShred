@@ -2,6 +2,7 @@ package com.jordangellatly.starwarsvshred.application
 
 import android.app.Application
 import com.jordangellatly.starwarsvshred.dagger.AppComponent
+import com.jordangellatly.starwarsvshred.dagger.AppModule
 import com.jordangellatly.starwarsvshred.dagger.DaggerAppComponent
 
 class StarWarsApplication : Application() {
@@ -9,6 +10,6 @@ class StarWarsApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        starWarsComponent = DaggerAppComponent.builder().build()
+        starWarsComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
     }
 }

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.application.StarWarsApplication
 import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
+import com.jordangellatly.starwarsvshred.prefs.Const
 import kotlinx.android.synthetic.main.activity_detail.*
 import org.parceler.Parcels
 import javax.inject.Inject
@@ -28,8 +29,12 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        characterFromIntent = Parcels.unwrap(intent.getParcelableExtra("character"))
+
+        sharedPreferences = getSharedPreferences(Const.FAVORITES, Context.MODE_PRIVATE)
+
         presenter.setView(this@DetailActivity)
-        presenter.onViewCreated()
+        presenter.onViewCreated(characterFromIntent.name)
 
         favorite_icon.setOnClickListener {
             presenter.storeFavoritePreferences()
@@ -37,7 +42,6 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
     }
 
     override fun displayCharacterDetails() {
-        characterFromIntent = Parcels.unwrap(intent.getParcelableExtra("character"))
         character_name.text = characterFromIntent.name
         height_value.text = characterFromIntent.height
         mass_value.text = characterFromIntent.mass
@@ -46,13 +50,6 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         eye_color_value.text = characterFromIntent.eyeColor
         birth_year_value.text = characterFromIntent.birthYear
         gender_value.text = characterFromIntent.gender
-
-        sharedPreferences = getSharedPreferences("FAVORITES", Context.MODE_PRIVATE)
-        if (sharedPreferences.getBoolean(characterFromIntent.name, false)) {
-            favorite_icon.setImageResource(R.drawable.ic_star)
-        } else {
-            favorite_icon.setImageResource(R.drawable.ic_star_outline)
-        }
     }
 
     override fun markCharacterFavorite() {
@@ -76,5 +73,13 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
             putBoolean(characterFromIntent.name, !isFavorite)
             apply()
         }
+    }
+
+    override fun setStar() {
+        favorite_icon.setImageResource(R.drawable.ic_star)
+    }
+
+    override fun removeStar() {
+        favorite_icon.setImageResource(R.drawable.ic_star_outline)
     }
 }

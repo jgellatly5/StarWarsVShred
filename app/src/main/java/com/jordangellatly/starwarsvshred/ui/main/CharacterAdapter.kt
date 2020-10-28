@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
+import com.jordangellatly.starwarsvshred.prefs.Const
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -32,17 +33,8 @@ class CharacterAdapter(
             }
         }
 
-        fun updateIcon(context: Context) {
-            val sharedPreferences = context.getSharedPreferences("FAVORITES", Context.MODE_PRIVATE)
-            if (sharedPreferences.getBoolean(nameTextView.text.toString(), false)) {
-                favoriteIcon.setImageResource(R.drawable.ic_star)
-            } else {
-                favoriteIcon.setImageResource(R.drawable.ic_star_outline)
-            }
-        }
-
         private fun handleFavoriteCharacter() {
-            val sharedPrefs = context.getSharedPreferences("FAVORITES", Context.MODE_PRIVATE)
+            val sharedPrefs = context.getSharedPreferences(Const.FAVORITES, Context.MODE_PRIVATE)
             val isFavorite = sharedPrefs.getBoolean(nameTextView.text.toString(), false)
             if (isFavorite) {
                 favoriteIcon.setImageResource(R.drawable.ic_star_outline)
@@ -63,7 +55,12 @@ class CharacterAdapter(
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         holder.nameTextView.text = filteredCharacters[position].name
-        holder.updateIcon(context)
+        val sharedPreferences = context.getSharedPreferences(Const.FAVORITES, Context.MODE_PRIVATE)
+        if (sharedPreferences.getBoolean(holder.nameTextView.text.toString(), false)) {
+            holder.favoriteIcon.setImageResource(R.drawable.ic_star)
+        } else {
+            holder.favoriteIcon.setImageResource(R.drawable.ic_star_outline)
+        }
     }
 
     override fun getItemCount(): Int = filteredCharacters.size
