@@ -19,8 +19,8 @@ class CharacterAdapter(
     inner class CharacterViewHolder(
         characterListItem: View
     ) : RecyclerView.ViewHolder(characterListItem) {
-        var nameTextView: TextView = characterListItem.findViewById(R.id.name_text_view)
-        var favoriteIcon: ImageView = characterListItem.findViewById(R.id.favorite)
+        val nameTextView: TextView = characterListItem.findViewById(R.id.name_text_view)
+        val favoriteIcon: ImageView = characterListItem.findViewById(R.id.favorite)
         init {
             favoriteIcon.setOnClickListener {
                 handleFavoriteCharacter()
