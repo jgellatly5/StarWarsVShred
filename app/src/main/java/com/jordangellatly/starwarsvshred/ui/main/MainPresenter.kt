@@ -14,9 +14,14 @@ class MainPresenter @Inject constructor(
         this.mainView = mainView
     }
 
-    override fun onViewCreated() {
-        mainView.showProgress()
-        charactersRepository.loadCharacters(this)
+    override fun onViewCreated(characterList: List<StarWarsCharacter>) {
+        if (characterList.isEmpty()) {
+            mainView.showProgress()
+            charactersRepository.loadCharacters(this)
+        } else {
+            mainView.setupRecyclerView()
+            mainView.hideProgress()
+        }
     }
 
     override fun refreshCharacterDetails() {

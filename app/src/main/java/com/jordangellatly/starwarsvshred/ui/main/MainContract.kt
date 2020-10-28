@@ -5,7 +5,7 @@ import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
 interface MainContract {
     interface Presenter {
         fun setView(mainView: View)
-        fun onViewCreated()
+        fun onViewCreated(characterList: List<StarWarsCharacter>)
         fun refreshCharacterDetails()
         fun showCharacterDetails(character: StarWarsCharacter)
         fun searchList(filterString: String?)
