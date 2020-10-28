@@ -23,4 +23,14 @@ class ViewHolderPresenter @Inject constructor(
         }
         appPreferencesHelper.savePrefs(characterName, isFavorite)
     }
+
+    override fun onBindData(characterName: String) {
+        characterViewHolder.setCharacterName(characterName)
+        val isFavorite = appPreferencesHelper.isCharacterFavorite(characterName)
+        if (isFavorite) {
+            characterViewHolder.setStar()
+        } else {
+            characterViewHolder.removeStar()
+        }
+    }
 }

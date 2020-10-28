@@ -4,6 +4,7 @@ interface ViewHolderContract {
     interface Presenter {
         fun setView(characterViewHolder: View)
         fun storeFavoritePreferences(characterName: String)
+        fun onBindData(characterName: String)
     }
 
     interface View {
@@ -11,5 +12,6 @@ interface ViewHolderContract {
         fun removeStar()
         fun setFavoriteMessage()
         fun removeFavoriteMessage()
+        fun setCharacterName(characterName: String)
     }
 }

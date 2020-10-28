@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.application.StarWarsApplication
 import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
-import com.jordangellatly.starwarsvshred.prefs.Const
 import com.jordangellatly.starwarsvshred.ui.main.MainContract
 import java.util.*
 import javax.inject.Inject
@@ -17,28 +16,28 @@ import kotlin.collections.ArrayList
 
 class CharacterAdapter(
     private val context: Context,
-    private val characterDataset: MutableList<StarWarsCharacter>,
+    private val characterList: MutableList<StarWarsCharacter>,
     private val mainPresenter: MainContract.Presenter,
     private val app: StarWarsApplication
 ) : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>(), Filterable {
-    private var filteredCharacters: MutableList<StarWarsCharacter> = characterDataset
+    private var filteredCharacters: MutableList<StarWarsCharacter> = characterList
 
     inner class CharacterViewHolder(
         characterListItem: View
     ) : RecyclerView.ViewHolder(characterListItem), ViewHolderContract.View {
 
         @Inject
-        lateinit var presenter: ViewHolderPresenter
+        lateinit var viewHolderPresenter: ViewHolderPresenter
 
-        val nameTextView: TextView = characterListItem.findViewById(R.id.name_text_view)
-        val favoriteIcon: ImageView = characterListItem.findViewById(R.id.favorite)
+        private val nameTextView: TextView = characterListItem.findViewById(R.id.name_text_view)
+        private val favoriteIcon: ImageView = characterListItem.findViewById(R.id.favorite)
 
         init {
             app.starWarsComponent.inject(this)
-            presenter.setView(this)
+            viewHolderPresenter.setView(this)
 
             favoriteIcon.setOnClickListener {
-                presenter.storeFavoritePreferences(nameTextView.text.toString())
+                viewHolderPresenter.storeFavoritePreferences(nameTextView.text.toString())
             }
             characterListItem.setOnClickListener {
                 mainPresenter.showCharacterDetails(filteredCharacters[adapterPosition])
@@ -65,6 +64,10 @@ class CharacterAdapter(
                 Toast.LENGTH_SHORT
             ).show()
         }
+
+        override fun setCharacterName(characterName: String) {
+            nameTextView.text = characterName
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder =
@@ -72,25 +75,18 @@ class CharacterAdapter(
             LayoutInflater.from(parent.context).inflate(R.layout.character_list_item, parent, false)
         )
 
-    override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        holder.nameTextView.text = filteredCharacters[position].name
-        val sharedPreferences = context.getSharedPreferences(Const.FAVORITES, Context.MODE_PRIVATE)
-        if (sharedPreferences.getBoolean(holder.nameTextView.text.toString(), false)) {
-            holder.setStar()
-        } else {
-            holder.removeStar()
-        }
-    }
+    override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) =
+        holder.viewHolderPresenter.onBindData(filteredCharacters[position].name)
 
     override fun getItemCount(): Int = filteredCharacters.size
 
     override fun getFilter(): Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence): FilterResults {
             filteredCharacters = if (constraint.isEmpty()) {
-                characterDataset
+                characterList
             } else {
                 val filteredList = ArrayList<StarWarsCharacter>()
-                for (character in characterDataset) {
+                for (character in characterList) {
                     if (character.name.toLowerCase(Locale.getDefault()).startsWith(constraint)) {
                         filteredList.add(character)
                     }
