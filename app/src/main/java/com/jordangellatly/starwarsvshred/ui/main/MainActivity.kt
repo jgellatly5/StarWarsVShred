@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView.OnQueryTextListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
+import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordangellatly.starwarsvshred.R
@@ -43,21 +44,30 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         // MainContract.Presenter
         presenter.setView(this@MainActivity)
         presenter.onViewCreated()
+
+        search_view.setOnQueryTextListener(object : OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!recycler_view.isEmpty()) {
+                    presenter.searchList(query)
+                } else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "No match found.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                presenter.searchList(newText)
+                return false
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
-        val search = menu.findItem(R.id.search)
-        val searchView = search.actionView as SearchView
-        searchView.queryHint = "Search..."
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                presenter.searchList(newText)
-                return true
-            }
-        })
         return super.onCreateOptionsMenu(menu)
     }
 
