@@ -2,14 +2,13 @@ package com.jordangellatly.starwarsvshred.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView.OnQueryTextListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isEmpty
+import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordangellatly.starwarsvshred.R
@@ -37,7 +36,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
         (application as StarWarsApplication).starWarsComponent.inject(this)
 
         if (savedInstanceState != null) {
-            characterList = savedInstanceState.getParcelableArrayList<StarWarsCharacter>(Const.RETAIN_STATE) as ArrayList<StarWarsCharacter>
+            characterList =
+                savedInstanceState.getParcelableArrayList<StarWarsCharacter>(Const.RETAIN_STATE) as ArrayList<StarWarsCharacter>
         }
 
         characterAdapter = CharacterAdapter(
@@ -55,10 +55,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        if (!recycler_view.isEmpty()) {
-            for (character in characterList) {
-                Log.w(TAG, "onQueryTextSubmit: $character")
-            }
+        if (recycler_view.isNotEmpty()) {
             presenter.searchList(query)
         } else {
             Toast.makeText(
@@ -71,11 +68,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        for (character in characterList) {
-            Log.w(TAG, "onQueryTextSubmit: $character")
-        }
         presenter.searchList(newText)
-
         return false
     }
 
@@ -92,8 +85,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.refresh -> {
-                search_view.setQuery("", false)
-                search_view.clearFocus()
                 presenter.refreshCharacterDetails()
             }
         }
@@ -161,6 +152,11 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
 
     override fun filterList(filterString: String?) {
         characterAdapter.filter.filter(filterString)
+    }
+
+    override fun clearSearchQuery() {
+        search_view.setQuery("", false)
+        search_view.clearFocus()
     }
 
     companion object {

@@ -20,6 +20,7 @@ class MainPresenter @Inject constructor(
     }
 
     override fun refreshCharacterDetails() {
+        mainView.clearSearchQuery()
         mainView.showProgress()
         mainView.clearList()
         mainView.showRefresh()

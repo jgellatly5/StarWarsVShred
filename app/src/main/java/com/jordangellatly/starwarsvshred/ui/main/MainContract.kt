@@ -20,5 +20,6 @@ interface MainContract {
         fun onCharacterSelected(character: StarWarsCharacter)
         fun clearList()
         fun filterList(filterString: String?)
+        fun clearSearchQuery()
     }
 }
