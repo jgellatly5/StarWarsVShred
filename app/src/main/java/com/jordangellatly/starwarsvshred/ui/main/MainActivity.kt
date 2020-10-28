@@ -92,12 +92,16 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
     }
 
     // MainContract.View
-    override fun displayCharacterNames(characters: List<StarWarsCharacter>) {
+    override fun addCharacterNamesFromApi(characters: List<StarWarsCharacter>) {
         if (characterList.isEmpty()) {
             for (character in characters) {
                 characterList.add(character)
             }
         }
+    }
+
+    // MainContract.View
+    override fun setupRecyclerView() {
         recycler_view.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)

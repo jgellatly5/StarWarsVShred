@@ -37,7 +37,8 @@ class MainPresenter @Inject constructor(
 
     override fun onCharactersLoaded(characters: List<StarWarsCharacter>) {
         mainView.hideProgress()
-        mainView.displayCharacterNames(characters)
+        mainView.addCharacterNamesFromApi(characters)
+        mainView.setupRecyclerView()
     }
 
     override fun onDataNotAvailable() {

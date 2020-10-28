@@ -12,7 +12,7 @@ interface MainContract {
     }
 
     interface View {
-        fun displayCharacterNames(characters: List<StarWarsCharacter>)
+        fun addCharacterNamesFromApi(characters: List<StarWarsCharacter>)
         fun displayError()
         fun showProgress()
         fun hideProgress()
@@ -21,5 +21,6 @@ interface MainContract {
         fun clearList()
         fun filterList(filterString: String?)
         fun clearSearchQuery()
+        fun setupRecyclerView()
     }
 }
