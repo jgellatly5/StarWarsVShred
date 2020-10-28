@@ -8,6 +8,7 @@ interface MainContract {
         fun onViewCreated()
         fun refreshCharacterDetails()
         fun showCharacterDetails(character: StarWarsCharacter)
+        fun searchList(filterString: String?)
     }
 
     interface View {
@@ -17,5 +18,7 @@ interface MainContract {
         fun hideProgress()
         fun showRefresh()
         fun onCharacterSelected(character: StarWarsCharacter)
+        fun clearList()
+        fun filterList(filterString: String?)
     }
 }

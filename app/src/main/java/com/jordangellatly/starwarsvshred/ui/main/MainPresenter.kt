@@ -21,12 +21,17 @@ class MainPresenter @Inject constructor(
 
     override fun refreshCharacterDetails() {
         mainView.showProgress()
+        mainView.clearList()
         mainView.showRefresh()
         charactersRepository.loadCharacters(this)
     }
 
     override fun showCharacterDetails(character: StarWarsCharacter) {
         mainView.onCharacterSelected(character)
+    }
+
+    override fun searchList(filterString: String?) {
+        mainView.filterList(filterString)
     }
 
     override fun onCharactersLoaded(characters: List<StarWarsCharacter>) {

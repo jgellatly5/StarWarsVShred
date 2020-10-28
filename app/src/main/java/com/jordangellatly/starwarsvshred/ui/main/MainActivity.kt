@@ -22,7 +22,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var characterAdapter: CharacterAdapter
-    private var characterDataset: MutableList<StarWarsCharacter> = mutableListOf()
+    private var characterList: MutableList<StarWarsCharacter> = mutableListOf()
 
     @Inject
     lateinit var presenter: MainContract.Presenter
@@ -33,7 +33,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         (application as StarWarsApplication).starWarsComponent.inject(this)
 
-        characterAdapter = CharacterAdapter(this@MainActivity, characterDataset, presenter, (application as StarWarsApplication))
+        characterAdapter = CharacterAdapter(
+            this@MainActivity,
+            characterList,
+            presenter,
+            (application as StarWarsApplication)
+        )
 
         // MainContract.Presenter
         presenter.setView(this@MainActivity)
@@ -49,7 +54,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             override fun onQueryTextSubmit(query: String?): Boolean = false
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                characterAdapter.filter.filter(newText)
+                presenter.searchList(newText)
                 return true
             }
         })
@@ -58,10 +63,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.refresh -> {
-                characterAdapter.clear()
-                presenter.refreshCharacterDetails()
-            }
+            R.id.refresh -> presenter.refreshCharacterDetails()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     // MainContract.View
     override fun displayCharacterNames(characters: List<StarWarsCharacter>) {
         for (character in characters) {
-            characterDataset.add(character)
+            characterList.add(character)
         }
         recycler_view.apply {
             setHasFixedSize(true)
@@ -117,6 +119,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             putExtras(bundle)
         }
         startActivity(intent)
+    }
+
+    override fun clearList() {
+        characterAdapter.clear()
+    }
+
+    override fun filterList(filterString: String?) {
+        characterAdapter.filter.filter(filterString)
     }
 
     companion object {
