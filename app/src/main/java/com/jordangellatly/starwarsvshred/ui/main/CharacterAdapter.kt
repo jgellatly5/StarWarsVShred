@@ -8,6 +8,8 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CharacterAdapter(
     private val context: Context,
@@ -41,29 +43,23 @@ class CharacterAdapter(
 
         private fun handleFavoriteCharacter() {
             val sharedPrefs = context.getSharedPreferences("FAVORITES", Context.MODE_PRIVATE)
-            if (sharedPrefs.getBoolean(nameTextView.text.toString(), false)) {
-                with(sharedPrefs.edit()) {
-                    putBoolean(nameTextView.text.toString(), false)
-                    apply()
-                }
+            val isFavorite = sharedPrefs.getBoolean(nameTextView.text.toString(), false)
+            if (isFavorite) {
                 favoriteIcon.setImageResource(R.drawable.ic_star_outline)
                 Toast.makeText(context, "${nameTextView.text} removed as a favorite", Toast.LENGTH_SHORT).show()
             } else {
-                with(sharedPrefs.edit()) {
-                    putBoolean(nameTextView.text.toString(), true)
-                    apply()
-                }
                 favoriteIcon.setImageResource(R.drawable.ic_star)
                 Toast.makeText(context, "${nameTextView.text} is now a favorite", Toast.LENGTH_SHORT).show()
+            }
+            with(sharedPrefs.edit()) {
+                putBoolean(nameTextView.text.toString(), !isFavorite)
+                apply()
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.character_list_item, parent, false)
-        return CharacterViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder =
+        CharacterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.character_list_item, parent, false))
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         holder.nameTextView.text = filteredCharacters[position].name
@@ -79,7 +75,7 @@ class CharacterAdapter(
             } else {
                 val filteredList = ArrayList<StarWarsCharacter>()
                 for (character in characterDataset) {
-                    if (character.name.toLowerCase().startsWith(constraint)) {
+                    if (character.name.toLowerCase(Locale.getDefault()).startsWith(constraint)) {
                         filteredList.add(character)
                     }
                 }
