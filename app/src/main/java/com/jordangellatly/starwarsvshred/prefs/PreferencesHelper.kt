@@ -1,5 +1,6 @@
 package com.jordangellatly.starwarsvshred.prefs
 
 interface PreferencesHelper {
-    fun isCharacterFavorite(name: String): Boolean
+    fun isCharacterFavorite(characterName: String): Boolean
+    fun savePrefs(characterName: String, isFavorite: Boolean)
 }

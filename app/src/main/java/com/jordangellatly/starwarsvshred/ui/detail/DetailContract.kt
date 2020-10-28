@@ -4,13 +4,14 @@ interface DetailContract {
     interface Presenter {
         fun setView(detailView: View)
         fun onViewCreated(characterName: String)
-        fun storeFavoritePreferences()
+        fun storeFavoritePreferences(characterName: String)
     }
 
     interface View {
         fun displayCharacterDetails()
-        fun markCharacterFavorite()
         fun setStar()
         fun removeStar()
+        fun setFavoriteMessage()
+        fun removeFavoriteMessage()
     }
 }

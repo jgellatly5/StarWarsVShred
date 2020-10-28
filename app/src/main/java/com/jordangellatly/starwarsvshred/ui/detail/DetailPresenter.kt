@@ -13,16 +13,24 @@ class DetailPresenter @Inject constructor(
         this.detailView = detailView
     }
 
-    override fun onViewCreated(name: String) {
+    override fun onViewCreated(characterName: String) {
         detailView.displayCharacterDetails()
-        if (appPreferencesHelper.isCharacterFavorite(name)) {
+        if (appPreferencesHelper.isCharacterFavorite(characterName)) {
             detailView.setStar()
         } else {
             detailView.removeStar()
         }
     }
 
-    override fun storeFavoritePreferences() {
-        detailView.markCharacterFavorite()
+    override fun storeFavoritePreferences(characterName: String) {
+        val isFavorite = appPreferencesHelper.isCharacterFavorite(characterName)
+        if (isFavorite) {
+            detailView.removeStar()
+            detailView.removeFavoriteMessage()
+        } else {
+            detailView.setStar()
+            detailView.setFavoriteMessage()
+        }
+        appPreferencesHelper.savePrefs(characterName, isFavorite)
     }
 }
