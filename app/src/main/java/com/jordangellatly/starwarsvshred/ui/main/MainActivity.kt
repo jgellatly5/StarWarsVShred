@@ -2,6 +2,7 @@ package com.jordangellatly.starwarsvshred.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,16 +15,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.application.StarWarsApplication
 import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
+import com.jordangellatly.starwarsvshred.prefs.Const
 import com.jordangellatly.starwarsvshred.ui.adapter.CharacterAdapter
 import com.jordangellatly.starwarsvshred.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.parceler.Parcels
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), MainContract.View {
+class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener {
 
     private lateinit var characterAdapter: CharacterAdapter
-    private var characterList: MutableList<StarWarsCharacter> = mutableListOf()
+    private var characterList: ArrayList<StarWarsCharacter> = arrayListOf()
 
     @Inject
     lateinit var presenter: MainContract.Presenter
@@ -33,6 +35,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         setContentView(R.layout.activity_main)
 
         (application as StarWarsApplication).starWarsComponent.inject(this)
+
+        if (savedInstanceState != null) {
+            characterList = savedInstanceState.getParcelableArrayList<StarWarsCharacter>(Const.RETAIN_STATE) as ArrayList<StarWarsCharacter>
+        }
 
         characterAdapter = CharacterAdapter(
             this@MainActivity,
@@ -45,25 +51,37 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         presenter.setView(this@MainActivity)
         presenter.onViewCreated()
 
-        search_view.setOnQueryTextListener(object : OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (!recycler_view.isEmpty()) {
-                    presenter.searchList(query)
-                } else {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "No match found.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                return false
-            }
+        search_view.setOnQueryTextListener(this@MainActivity)
+    }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                presenter.searchList(newText)
-                return false
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if (!recycler_view.isEmpty()) {
+            for (character in characterList) {
+                Log.w(TAG, "onQueryTextSubmit: $character")
             }
-        })
+            presenter.searchList(query)
+        } else {
+            Toast.makeText(
+                this@MainActivity,
+                "No match found.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        for (character in characterList) {
+            Log.w(TAG, "onQueryTextSubmit: $character")
+        }
+        presenter.searchList(newText)
+
+        return false
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList(Const.RETAIN_STATE, characterList)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,15 +91,21 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.refresh -> presenter.refreshCharacterDetails()
+            R.id.refresh -> {
+                search_view.setQuery("", false)
+                search_view.clearFocus()
+                presenter.refreshCharacterDetails()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     // MainContract.View
     override fun displayCharacterNames(characters: List<StarWarsCharacter>) {
-        for (character in characters) {
-            characterList.add(character)
+        if (characterList.isEmpty()) {
+            for (character in characters) {
+                characterList.add(character)
+            }
         }
         recycler_view.apply {
             setHasFixedSize(true)
@@ -141,5 +165,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     companion object {
         private const val TAG = "MainActivity"
+
     }
 }
