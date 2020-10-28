@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.application.StarWarsApplication
 import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
+import com.jordangellatly.starwarsvshred.ui.adapter.CharacterAdapter
 import com.jordangellatly.starwarsvshred.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.parceler.Parcels
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         (application as StarWarsApplication).starWarsComponent.inject(this)
 
-        characterAdapter = CharacterAdapter(this@MainActivity, characterDataset, presenter)
+        characterAdapter = CharacterAdapter(this@MainActivity, characterDataset, presenter, (application as StarWarsApplication))
 
         // MainContract.Presenter
         presenter.setView(this@MainActivity)

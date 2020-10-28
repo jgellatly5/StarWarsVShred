@@ -2,6 +2,8 @@ package com.jordangellatly.starwarsvshred.dagger
 
 import com.jordangellatly.starwarsvshred.network.CharacterRepositoryImpl
 import com.jordangellatly.starwarsvshred.prefs.AppPreferencesHelper
+import com.jordangellatly.starwarsvshred.ui.adapter.ViewHolderContract
+import com.jordangellatly.starwarsvshred.ui.adapter.ViewHolderPresenter
 import com.jordangellatly.starwarsvshred.ui.detail.DetailContract
 import com.jordangellatly.starwarsvshred.ui.detail.DetailPresenter
 import com.jordangellatly.starwarsvshred.ui.main.MainContract
@@ -19,5 +21,10 @@ class PresenterModule {
 
     @Provides
     @Singleton
-    fun provideDetailActivityPresenter(appPreferencesHelper: AppPreferencesHelper): DetailContract.Presenter = DetailPresenter(appPreferencesHelper)
+    fun provideDetailActivityPresenter(appPreferencesHelper: AppPreferencesHelper): DetailContract.Presenter =
+        DetailPresenter(appPreferencesHelper)
+
+    @Provides
+    fun provideViewHolderPresenter(appPreferencesHelper: AppPreferencesHelper): ViewHolderContract.Presenter =
+        ViewHolderPresenter(appPreferencesHelper)
 }

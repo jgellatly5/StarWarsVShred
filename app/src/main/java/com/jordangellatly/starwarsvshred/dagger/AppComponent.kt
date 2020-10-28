@@ -1,5 +1,6 @@
 package com.jordangellatly.starwarsvshred.dagger
 
+import com.jordangellatly.starwarsvshred.ui.adapter.CharacterAdapter
 import com.jordangellatly.starwarsvshred.ui.detail.DetailActivity
 import com.jordangellatly.starwarsvshred.ui.main.MainActivity
 import dagger.Component
@@ -10,4 +11,5 @@ import javax.inject.Singleton
 interface AppComponent {
     fun inject(activity: MainActivity)
     fun inject(activity: DetailActivity)
+    fun inject(viewHolder: CharacterAdapter.CharacterViewHolder)
 }

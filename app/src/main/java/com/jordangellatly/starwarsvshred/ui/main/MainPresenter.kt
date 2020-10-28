@@ -5,7 +5,7 @@ import com.jordangellatly.starwarsvshred.network.CharacterRepository
 import javax.inject.Inject
 
 class MainPresenter @Inject constructor(
-    private val charactersRepository: CharacterRepository
+    private val charactersRepository: CharacterRepository,
 ) : MainContract.Presenter, CharacterRepository.LoadCharactersCallback {
 
     private lateinit var mainView: MainContract.View
