@@ -31,8 +31,8 @@ class CharacterAdapter(
         }
 
         fun updateIcon(context: Context) {
-            val sharedPreferences = context.getSharedPreferences(nameTextView.text.toString(), Context.MODE_PRIVATE)
-            if (sharedPreferences.getBoolean("is_favorite", false)) {
+            val sharedPreferences = context.getSharedPreferences("FAVORITES", Context.MODE_PRIVATE)
+            if (sharedPreferences.getBoolean(nameTextView.text.toString(), false)) {
                 favoriteIcon.setImageResource(R.drawable.ic_star)
             } else {
                 favoriteIcon.setImageResource(R.drawable.ic_star_outline)
@@ -40,17 +40,17 @@ class CharacterAdapter(
         }
 
         private fun handleFavoriteCharacter() {
-            val sharedPrefs = context.getSharedPreferences(nameTextView.text.toString(), Context.MODE_PRIVATE)
-            if (sharedPrefs.getBoolean("is_favorite", false)) {
+            val sharedPrefs = context.getSharedPreferences("FAVORITES", Context.MODE_PRIVATE)
+            if (sharedPrefs.getBoolean(nameTextView.text.toString(), false)) {
                 with(sharedPrefs.edit()) {
-                    putBoolean("is_favorite", false)
+                    putBoolean(nameTextView.text.toString(), false)
                     apply()
                 }
                 favoriteIcon.setImageResource(R.drawable.ic_star_outline)
                 Toast.makeText(context, "${nameTextView.text} removed as a favorite", Toast.LENGTH_SHORT).show()
             } else {
                 with(sharedPrefs.edit()) {
-                    putBoolean("is_favorite", true)
+                    putBoolean(nameTextView.text.toString(), true)
                     apply()
                 }
                 favoriteIcon.setImageResource(R.drawable.ic_star)

@@ -2,9 +2,9 @@ package com.jordangellatly.starwarsvshred.ui.detail
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.application.StarWarsApplication
 import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
@@ -47,8 +47,8 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         birth_year_value.text = characterFromIntent.birthYear
         gender_value.text = characterFromIntent.gender
 
-        sharedPreferences = getSharedPreferences(character_name.text.toString(), Context.MODE_PRIVATE)
-        if (sharedPreferences.getBoolean("is_favorite", false)) {
+        sharedPreferences = getSharedPreferences("FAVORITES", Context.MODE_PRIVATE)
+        if (sharedPreferences.getBoolean(characterFromIntent.name, false)) {
             favorite_icon.setImageResource(R.drawable.ic_star)
         } else {
             favorite_icon.setImageResource(R.drawable.ic_star_outline)
@@ -56,16 +56,24 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
     }
 
     override fun markCharacterFavorite() {
-        val isFavorite = sharedPreferences.getBoolean("is_favorite", false)
+        val isFavorite = sharedPreferences.getBoolean(characterFromIntent.name, false)
         if (isFavorite) {
             favorite_icon.setImageResource(R.drawable.ic_star_outline)
-            Toast.makeText(this@DetailActivity, "${character_name.text} removed as a favorite", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@DetailActivity,
+                "${character_name.text} removed as a favorite",
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
             favorite_icon.setImageResource(R.drawable.ic_star)
-            Toast.makeText(this@DetailActivity, "${character_name.text} is now a favorite", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@DetailActivity,
+                "${character_name.text} is now a favorite",
+                Toast.LENGTH_SHORT
+            ).show()
         }
         with(sharedPreferences.edit()) {
-            putBoolean("is_favorite", !isFavorite)
+            putBoolean(characterFromIntent.name, !isFavorite)
             apply()
         }
     }
