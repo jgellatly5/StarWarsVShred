@@ -1,6 +1,8 @@
 package com.jordangellatly.starwarsvshred.ui.main
 
+import android.content.Context
 import android.content.Intent
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -113,6 +115,16 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
                 )
             )
         }
+    }
+
+    override fun isWifiEnabled(): Boolean {
+        val wifiManager: WifiManager =
+            applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        return wifiManager.isWifiEnabled
+    }
+
+    override fun showWifiDisabled() {
+        Toast.makeText(this@MainActivity, "Wifi is disconnected.", Toast.LENGTH_SHORT).show()
     }
 
     // MainContract.View

@@ -20,11 +20,15 @@ class MainPresenter @Inject constructor(
     }
 
     override fun refreshCharacterDetails() {
-        mainView.clearSearchQuery()
-        mainView.showProgress()
-        mainView.clearList()
-        mainView.showRefresh()
-        charactersRepository.loadCharacters(this)
+        if (mainView.isWifiEnabled()) {
+            mainView.clearSearchQuery()
+            mainView.showProgress()
+            mainView.clearList()
+            mainView.showRefresh()
+            charactersRepository.loadCharacters(this)
+        } else {
+            mainView.showWifiDisabled()
+        }
     }
 
     override fun showCharacterDetails(character: StarWarsCharacter) {

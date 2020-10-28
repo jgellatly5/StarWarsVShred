@@ -22,5 +22,7 @@ interface MainContract {
         fun filterList(filterString: String?)
         fun clearSearchQuery()
         fun setupRecyclerView()
+        fun isWifiEnabled(): Boolean
+        fun showWifiDisabled()
     }
 }
