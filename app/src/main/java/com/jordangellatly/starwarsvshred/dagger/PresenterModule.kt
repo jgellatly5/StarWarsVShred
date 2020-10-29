@@ -16,8 +16,8 @@ import javax.inject.Singleton
 class PresenterModule {
     @Provides
     @Singleton
-    fun provideMainActivityPresenter(characterRepository: CharacterRepositoryImpl): MainContract.Presenter =
-        MainPresenter(characterRepository)
+    fun provideMainActivityPresenter(characterRepository: CharacterRepositoryImpl, appPreferencesHelper: AppPreferencesHelper): MainContract.Presenter =
+        MainPresenter(characterRepository, appPreferencesHelper)
 
     @Provides
     @Singleton

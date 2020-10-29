@@ -9,6 +9,7 @@ interface MainContract {
         fun refreshCharacterDetails()
         fun showCharacterDetails(character: StarWarsCharacter)
         fun searchList(filterString: String?)
+        fun retrieveOfflineCharacterList(): ArrayList<StarWarsCharacter>
     }
 
     interface View {

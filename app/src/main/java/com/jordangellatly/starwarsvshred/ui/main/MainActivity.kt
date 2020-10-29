@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.wifi.WifiManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,7 +15,6 @@ import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.application.StarWarsApplication
 import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
@@ -25,7 +23,6 @@ import com.jordangellatly.starwarsvshred.ui.adapter.CharacterAdapter
 import com.jordangellatly.starwarsvshred.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.parceler.Parcels
-import java.lang.reflect.Type
 import javax.inject.Inject
 
 
@@ -50,13 +47,10 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
                 savedInstanceState.getParcelableArrayList<StarWarsCharacter>(Const.RETAIN_STATE) as ArrayList<StarWarsCharacter>
         }
 
-        sharedPreferences = getSharedPreferences(Const.OFFLINE, Context.MODE_PRIVATE)
-        val offlineCharacterList = sharedPreferences.getString(Const.CHARACTER_LIST, "")
-        if (!offlineCharacterList.equals("")) {
-            Log.w(TAG, "onCreate: $offlineCharacterList")
-            val collectionType: Type = object : TypeToken<List<StarWarsCharacter?>?>() {}.type
-            val characters: List<StarWarsCharacter> = Gson().fromJson(offlineCharacterList, collectionType)
-            characterList = characters as ArrayList<StarWarsCharacter>
+        sharedPreferences = getSharedPreferences(Const.RETAIN_STATE, Context.MODE_PRIVATE)
+
+        if (characterList.isEmpty()) {
+            characterList = presenter.retrieveOfflineCharacterList()
         }
 
         characterAdapter = CharacterAdapter(
