@@ -31,6 +31,6 @@ class DetailPresenter @Inject constructor(
             detailView.setStar()
             detailView.setFavoriteMessage()
         }
-        appPreferencesHelper.savePrefs(characterName, isFavorite)
+        appPreferencesHelper.saveFavoritePrefs(characterName, isFavorite)
     }
 }

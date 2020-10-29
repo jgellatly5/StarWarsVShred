@@ -60,6 +60,11 @@ class MainPresenter @Inject constructor(
         }
     }
 
+    override fun saveOfflineCharacterList(characterList: ArrayList<StarWarsCharacter>) {
+        val json = Gson().toJson(characterList)
+        appPreferencesHelper.saveOfflineCharacters(json)
+    }
+
     override fun onCharactersLoaded(characters: List<StarWarsCharacter>) {
         mainView.hideProgress()
         mainView.addCharacterNamesFromApi(characters)

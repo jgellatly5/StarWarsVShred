@@ -2,7 +2,6 @@ package com.jordangellatly.starwarsvshred.ui.main
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.view.Menu
@@ -14,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.application.StarWarsApplication
 import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
@@ -31,8 +29,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
     private lateinit var characterAdapter: CharacterAdapter
     private var characterList: ArrayList<StarWarsCharacter> = arrayListOf()
 
-    private lateinit var sharedPreferences: SharedPreferences
-
     @Inject
     lateinit var presenter: MainContract.Presenter
 
@@ -44,10 +40,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
 
         if (savedInstanceState != null) {
             characterList =
-                savedInstanceState.getParcelableArrayList<StarWarsCharacter>(Const.RETAIN_STATE) as ArrayList<StarWarsCharacter>
+                savedInstanceState.getParcelableArrayList<StarWarsCharacter>(Const.INSTANCE_STATE) as ArrayList<StarWarsCharacter>
         }
-
-        sharedPreferences = getSharedPreferences(Const.RETAIN_STATE, Context.MODE_PRIVATE)
 
         if (characterList.isEmpty()) {
             characterList = presenter.retrieveOfflineCharacterList()
@@ -86,12 +80,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList(Const.RETAIN_STATE, characterList)
-        val json = Gson().toJson(characterList)
-        with(sharedPreferences.edit()) {
-            putString(Const.CHARACTER_LIST, json)
-            apply()
-        }
+        outState.putParcelableArrayList(Const.INSTANCE_STATE, characterList)
+        presenter.saveOfflineCharacterList(characterList)
         super.onSaveInstanceState(outState)
     }
 

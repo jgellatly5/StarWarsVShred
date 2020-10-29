@@ -10,7 +10,7 @@ class AppPreferencesHelper @Inject constructor(context: Context) : PreferencesHe
 
     override fun isCharacterFavorite(characterName: String): Boolean = favoriteSharedPrefs.getBoolean(characterName, false)
 
-    override fun savePrefs(characterName: String, isFavorite: Boolean) {
+    override fun saveFavoritePrefs(characterName: String, isFavorite: Boolean) {
         with(favoriteSharedPrefs.edit()) {
             putBoolean(characterName, !isFavorite)
             apply()
@@ -18,4 +18,11 @@ class AppPreferencesHelper @Inject constructor(context: Context) : PreferencesHe
     }
 
     override fun getOfflineCharacters(): String? = offlineCharactersSharedPrefs.getString(Const.CHARACTER_LIST, "")
+
+    override fun saveOfflineCharacters(characterList: String) {
+        with(offlineCharactersSharedPrefs.edit()) {
+            putString(Const.CHARACTER_LIST, characterList)
+            apply()
+        }
+    }
 }

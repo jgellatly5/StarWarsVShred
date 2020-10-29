@@ -21,7 +21,7 @@ class ViewHolderPresenter @Inject constructor(
             characterViewHolder.setStar()
             characterViewHolder.setFavoriteMessage()
         }
-        appPreferencesHelper.savePrefs(characterName, isFavorite)
+        appPreferencesHelper.saveFavoritePrefs(characterName, isFavorite)
     }
 
     override fun onBindData(characterName: String) {
