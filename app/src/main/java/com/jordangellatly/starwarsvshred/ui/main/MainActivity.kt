@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordangellatly.starwarsvshred.R
 import com.jordangellatly.starwarsvshred.application.StarWarsApplication
 import com.jordangellatly.starwarsvshred.model.StarWarsCharacter
-import com.jordangellatly.starwarsvshred.prefs.Const
 import com.jordangellatly.starwarsvshred.ui.adapter.CharacterAdapter
 import com.jordangellatly.starwarsvshred.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,11 +37,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
 
         (application as StarWarsApplication).starWarsComponent.inject(this)
 
-        if (savedInstanceState != null) {
-            characterList =
-                savedInstanceState.getParcelableArrayList<StarWarsCharacter>(Const.INSTANCE_STATE) as ArrayList<StarWarsCharacter>
-        }
-
         if (characterList.isEmpty()) {
             characterList = presenter.retrieveOfflineCharacterList()
         }
@@ -54,7 +48,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
             (application as StarWarsApplication)
         )
 
-        // MainContract.Presenter
         presenter.setView(this@MainActivity)
         presenter.onViewCreated(characterList)
 
@@ -80,7 +73,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList(Const.INSTANCE_STATE, characterList)
         presenter.saveOfflineCharacterList(characterList)
         super.onSaveInstanceState(outState)
     }
@@ -99,7 +91,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
         return super.onOptionsItemSelected(item)
     }
 
-    // MainContract.View
     override fun addCharacterNamesFromApi(characters: List<StarWarsCharacter>) {
         if (characterList.isEmpty()) {
             for (character in characters) {
@@ -108,7 +99,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
         }
     }
 
-    // MainContract.View
     override fun setupRecyclerView() {
         recycler_view.apply {
             setHasFixedSize(true)
@@ -133,7 +123,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
         Toast.makeText(this@MainActivity, "Wifi is disconnected.", Toast.LENGTH_SHORT).show()
     }
 
-    // MainContract.View
     override fun displayError() {
         Toast.makeText(
             this@MainActivity,
@@ -142,22 +131,18 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
         ).show()
     }
 
-    // MainContract.View
     override fun showProgress() {
         progress_bar.visibility = View.VISIBLE
     }
 
-    // MainContract.View
     override fun hideProgress() {
         progress_bar.visibility = View.GONE
     }
 
-    // MainContract.View
     override fun showRefresh() {
         Toast.makeText(this@MainActivity, "Refreshing...", Toast.LENGTH_SHORT).show()
     }
 
-    // MainContract.View
     override fun onCharacterSelected(character: StarWarsCharacter) {
         val bundle = Bundle().apply {
             putParcelable("character", Parcels.wrap(character))
@@ -179,10 +164,5 @@ class MainActivity : AppCompatActivity(), MainContract.View, OnQueryTextListener
     override fun clearSearchQuery() {
         search_view.setQuery("", false)
         search_view.clearFocus()
-    }
-
-    companion object {
-        private const val TAG = "MainActivity"
-
     }
 }

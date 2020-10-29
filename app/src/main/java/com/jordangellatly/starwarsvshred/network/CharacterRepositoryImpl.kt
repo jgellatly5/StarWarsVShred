@@ -27,8 +27,4 @@ class CharacterRepositoryImpl @Inject constructor(private val serviceBuilder: Se
             }
         })
     }
-
-    companion object {
-        private const val TAG = "CharacterRepositoryImpl"
-    }
 }
