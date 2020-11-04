@@ -1,2 +1,2 @@
 # StarWarsVShred
-Star Wars V Shred
+MVP + Dagger + RecyclerView
