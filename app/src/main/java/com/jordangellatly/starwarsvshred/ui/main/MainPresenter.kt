@@ -56,7 +56,7 @@ class MainPresenter @Inject constructor(
             val characters: List<StarWarsCharacter> = Gson().fromJson(offlineCharacterListString, collectionType)
             characters as ArrayList<StarWarsCharacter>
         } else {
-            emptyList<StarWarsCharacter>() as ArrayList<StarWarsCharacter>
+            ArrayList()
         }
     }
 
